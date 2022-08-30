@@ -1,5 +1,13 @@
+# AWS Glue Crawler の Example
 
-# Welcome to your CDK Python project!
+AWS Glue Crawlerが作成するテーブルを観察するためのexampleです。
+*./glue_crawler_example/data/*および*./glue_crawler_example/non-hive/*に置かれたデータをS3バケットにアップロードし、それぞれに対するクローラを作成します。
+
+Glue Crawlerの実行はAWS Consoleから行ってください。
+
+以下、`cdk init`が作成したREADME.
+
+## Welcome to your CDK Python project!
 
 This is a blank project for CDK development with Python.
 
@@ -14,32 +22,32 @@ you can create the virtualenv manually.
 
 To manually create a virtualenv on MacOS and Linux:
 
-```
+```console
 $ python3 -m venv .venv
 ```
 
 After the init process completes and the virtualenv is created, you can use the following
 step to activate your virtualenv.
 
-```
+```console
 $ source .venv/bin/activate
 ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
 
-```
+```console
 % .venv\Scripts\activate.bat
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
 
-```
+```console
 $ pip install -r requirements.txt
 ```
 
 At this point you can now synthesize the CloudFormation template for this code.
 
-```
+```console
 $ cdk synth
 ```
 
