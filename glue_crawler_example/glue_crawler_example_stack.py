@@ -1,8 +1,6 @@
 import os
 from aws_cdk import (
-    # Duration,
     Stack,
-    # aws_sqs as sqs,
     aws_iam as iam,
     aws_s3 as s3,
     aws_s3_deployment as s3_deploy,
