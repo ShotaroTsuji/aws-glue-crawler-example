@@ -43,7 +43,7 @@ class GlueCrawlerExperiment(Construct):
                         )
                     ],
                 ),
-                database_name=f"glue_crawler_experiment_{prefix}",
+                database_name=f"glue_crawler_experiment_{'_'.join(prefix.split('-'))}",
         )
 
 
