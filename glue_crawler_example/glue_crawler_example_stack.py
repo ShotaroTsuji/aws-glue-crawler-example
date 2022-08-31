@@ -1,8 +1,6 @@
 import os
 from aws_cdk import (
-    # Duration,
     Stack,
-    # aws_sqs as sqs,
     aws_iam as iam,
     aws_s3 as s3,
     aws_s3_deployment as s3_deploy,
@@ -10,20 +8,20 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-class GlueCrawlerExampleStack(Stack):
+class GlueCrawlerExperiment(Construct):
 
     def __init__(self, scope: Construct, construct_id: str, prefix: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        bucket = s3.Bucket(self, "GlueCrawlerExampleJsonBucket")
+        bucket = s3.Bucket(self, "GlueCrawlerExperimentJsonBucket")
 
-        s3_deploy.BucketDeployment(self, "GlueCrawlerExampleBucketDeploy",
+        s3_deploy.BucketDeployment(self, "GlueCrawlerExperimentBucketDeploy",
                 destination_bucket=bucket,
                 destination_key_prefix=f"{prefix}/",
                 sources=[s3_deploy.Source.asset(os.path.join(os.path.dirname(__file__), prefix))]
         )
 
-        role = iam.Role(self, "GlueCrawlerExampleRole",
+        role = iam.Role(self, "GlueCrawlerExperimentRole",
                 assumed_by=iam.ServicePrincipal("glue.amazonaws.com"),
         )
 
@@ -37,7 +35,7 @@ class GlueCrawlerExampleStack(Stack):
             )
         )
 
-        crawler = glue.CfnCrawler(self, construct_id,
+        glue.CfnCrawler(self, construct_id,
                 role=role.role_name,
                 targets=glue.CfnCrawler.TargetsProperty(
                     s3_targets=[glue.CfnCrawler.S3TargetProperty(
@@ -45,5 +43,15 @@ class GlueCrawlerExampleStack(Stack):
                         )
                     ],
                 ),
-                database_name=f"glue_crawler_example_{prefix}",
+                database_name=f"glue_crawler_experiment_{prefix}",
         )
+
+
+class GlueCrawlerExampleStack(Stack):
+
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        GlueCrawlerExperiment(self, "Data", "data")
+        GlueCrawlerExperiment(self, "NonHive", "non-hive")
+        GlueCrawlerExperiment(self, "NonEmptyCommon", "non-empty-common")
