@@ -35,7 +35,7 @@ class GlueCrawlerExperiment(Construct):
             )
         )
 
-        glue.CfnCrawler(self, construct_id,
+        crawler = glue.CfnCrawler(self, construct_id,
                 role=role.role_name,
                 targets=glue.CfnCrawler.TargetsProperty(
                     s3_targets=[glue.CfnCrawler.S3TargetProperty(
@@ -44,6 +44,7 @@ class GlueCrawlerExperiment(Construct):
                     ],
                 ),
                 database_name=f"glue_crawler_experiment_{'_'.join(prefix.split('-'))}",
+                tags={"glue-crawler-experiment": prefix},
         )
 
 

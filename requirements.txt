@@ -1,2 +1,4 @@
 aws-cdk-lib==2.34.2
 constructs>=10.0.0,<11.0.0
+invoke==1.7.1
+boto3==1.24.63
