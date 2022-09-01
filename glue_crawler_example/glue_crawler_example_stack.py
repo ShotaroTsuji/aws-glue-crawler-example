@@ -46,7 +46,7 @@ class GlueCrawlerExperiment(Construct):
 
         glue.CfnCrawler(
             self,
-            construct_id,
+            "Crawler",
             role=role.role_name,
             targets=glue.CfnCrawler.TargetsProperty(s3_targets=[
                 glue.CfnCrawler.S3TargetProperty(
@@ -63,6 +63,6 @@ class GlueCrawlerExampleStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        GlueCrawlerExperiment(self, "Data", "data")
-        GlueCrawlerExperiment(self, "NonHive", "non-hive")
-        GlueCrawlerExperiment(self, "NonEmptyCommon", "non-empty-common")
+        GlueCrawlerExperiment(self, "DisjointKeys", "disjoint-keys")
+        GlueCrawlerExperiment(self, "NonHiveDisjointKeys", "non-hive-disjoint-keys")
+        GlueCrawlerExperiment(self, "OverlappingKeys", "overlapping-keys")
