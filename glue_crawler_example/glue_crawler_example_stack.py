@@ -13,15 +13,15 @@ class GlueCrawlerExperiment(Construct):
     def __init__(self, scope: Construct, construct_id: str, prefix: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        bucket = s3.Bucket(self, "GlueCrawlerExperimentJsonBucket")
+        bucket = s3.Bucket(self, "InputJsonBucket")
 
-        s3_deploy.BucketDeployment(self, "GlueCrawlerExperimentBucketDeploy",
+        s3_deploy.BucketDeployment(self, "InputJsonBucketDeployment",
                 destination_bucket=bucket,
                 destination_key_prefix=f"{prefix}/",
                 sources=[s3_deploy.Source.asset(os.path.join(os.path.dirname(__file__), prefix))]
         )
 
-        role = iam.Role(self, "GlueCrawlerExperimentRole",
+        role = iam.Role(self, "CrawlerRole",
                 assumed_by=iam.ServicePrincipal("glue.amazonaws.com"),
         )
 
@@ -35,7 +35,7 @@ class GlueCrawlerExperiment(Construct):
             )
         )
 
-        crawler = glue.CfnCrawler(self, construct_id,
+        glue.CfnCrawler(self, construct_id,
                 role=role.role_name,
                 targets=glue.CfnCrawler.TargetsProperty(
                     s3_targets=[glue.CfnCrawler.S3TargetProperty(
