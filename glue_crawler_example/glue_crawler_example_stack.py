@@ -8,6 +8,8 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+from . import data
+
 
 class GlueCrawlerExperiment(Construct):
 
@@ -17,16 +19,18 @@ class GlueCrawlerExperiment(Construct):
 
         bucket = s3.Bucket(self, "InputJsonBucket")
 
+        if prefix == 'json-data-example':
+            sources = data.json_data_example()
+        elif prefix == 'flat-and-one-common-key':
+            sources = data.flat_and_one_common_key()
+        else:
+            sources = [s3_deploy.Source.asset(os.path.join(os.path.dirname(__file__), prefix))]
+
         s3_deploy.BucketDeployment(self,
                                    "InputJsonBucketDeployment",
                                    destination_bucket=bucket,
                                    destination_key_prefix=f"{prefix}/",
-                                   sources=[
-                                       s3_deploy.Source.asset(
-                                           os.path.join(
-                                               os.path.dirname(__file__),
-                                               prefix))
-                                   ])
+                                   sources=sources)
 
         role = iam.Role(
             self,
@@ -66,3 +70,5 @@ class GlueCrawlerExampleStack(Stack):
         GlueCrawlerExperiment(self, "DisjointKeys", "disjoint-keys")
         GlueCrawlerExperiment(self, "NonHiveDisjointKeys", "non-hive-disjoint-keys")
         GlueCrawlerExperiment(self, "OverlappingKeys", "overlapping-keys")
+        GlueCrawlerExperiment(self, "JsonDataExample", "json-data-example")
+        GlueCrawlerExperiment(self, "FlatAndOneCommonKey", "flat-and-one-common-key")
