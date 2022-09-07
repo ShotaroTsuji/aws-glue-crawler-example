@@ -1,5 +1,6 @@
 {
 	"id": "160295",
 	"description": "desc",
-	"counts": 45
+	"counts": 45,
+	"q": "counts > 10"
 }

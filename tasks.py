@@ -28,6 +28,8 @@ def show_table_of_crawler(name):
     tables = client.get_tables(DatabaseName=database_name)
     for table in tables['TableList']:
         print('Table:', table['Name'])
+        for partition in table['PartitionKeys']:
+            print('Partition:', partition)
         for column in table['StorageDescriptor']['Columns']:
             print('Column:', column)
 
