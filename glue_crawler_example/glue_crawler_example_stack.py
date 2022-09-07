@@ -1,5 +1,6 @@
 import os
 from aws_cdk import (
+    RemovalPolicy,
     Stack,
     aws_iam as iam,
     aws_s3 as s3,
@@ -13,11 +14,9 @@ from . import data
 
 class GlueCrawlerExperiment(Construct):
 
-    def __init__(self, scope: Construct, construct_id: str, prefix: str,
+    def __init__(self, scope: Construct, construct_id: str, prefix: str, bucket: s3.IBucket,
                  **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-        bucket = s3.Bucket(self, "InputJsonBucket")
 
         if prefix == 'json-data-example':
             sources = data.json_data_example()
@@ -67,8 +66,10 @@ class GlueCrawlerExampleStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        GlueCrawlerExperiment(self, "DisjointKeys", "disjoint-keys")
-        GlueCrawlerExperiment(self, "NonHiveDisjointKeys", "non-hive-disjoint-keys")
-        GlueCrawlerExperiment(self, "OverlappingKeys", "overlapping-keys")
-        GlueCrawlerExperiment(self, "JsonDataExample", "json-data-example")
-        GlueCrawlerExperiment(self, "FlatAndOneCommonKey", "flat-and-one-common-key")
+        bucket = s3.Bucket(self, "InputJsonBucket", removal_policy=RemovalPolicy.DESTROY)
+
+        GlueCrawlerExperiment(self, "DisjointKeys", "disjoint-keys", bucket)
+        GlueCrawlerExperiment(self, "NonHiveDisjointKeys", "non-hive-disjoint-keys", bucket)
+        GlueCrawlerExperiment(self, "OverlappingKeys", "overlapping-keys", bucket)
+        GlueCrawlerExperiment(self, "JsonDataExample", "json-data-example", bucket)
+        GlueCrawlerExperiment(self, "FlatAndOneCommonKey", "flat-and-one-common-key", bucket)
