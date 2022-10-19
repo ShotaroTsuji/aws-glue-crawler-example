@@ -14,8 +14,8 @@ from . import data
 
 class GlueCrawlerExperiment(Construct):
 
-    def __init__(self, scope: Construct, construct_id: str,
-            bucket: s3.IBucket, role: iam.Role, **kwargs) -> None:
+    def __init__(self, scope: Construct, construct_id: str, bucket: s3.IBucket,
+                 role: iam.Role, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         if construct_id == 'JsonDataExample':
